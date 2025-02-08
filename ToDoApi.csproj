@@ -24,4 +24,12 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\C#\GitHubPortfolio\ToDoApi\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\C#\GitHubPortfolio\ToDoApi\.editorconfig" />
+  </ItemGroup>
+
 </Project>
