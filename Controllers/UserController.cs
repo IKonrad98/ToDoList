@@ -36,7 +36,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateUser([FromBody] RegisterUserModel model)
+    public IActionResult CreateUser([FromBody] CreateUserModel model)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 

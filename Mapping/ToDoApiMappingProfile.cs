@@ -13,7 +13,7 @@ public class ToDoApiMappingProfile : Profile
         CreateMap<UpdateToDoItemModel, ToDoItemEntity>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
         CreateMap<UserEntity, UserModel>().ReverseMap();
-        CreateMap<RegisterUserModel, UserEntity>()
+        CreateMap<CreateUserModel, UserEntity>()
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
     }
 }
