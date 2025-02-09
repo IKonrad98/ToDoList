@@ -4,7 +4,7 @@ public class ToDoItemEntity : BaseEntity
 {
     public string Title { get; set; }
     public string? Description { get; set; }
-    public bool? IsCompleted { get; set; }
+    public bool? IsCompleted { get; set; } = false;
     public DateTime CreateItem { get; set; } = DateTime.UtcNow;
     public DateTime? Deadline { get; set; }
 

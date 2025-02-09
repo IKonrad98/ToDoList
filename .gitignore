@@ -365,3 +365,4 @@ FodyWeavers.xsd
 
 [Mm]igrations/
 /appsettings.json
+/appsettings.Development.json
