@@ -7,11 +7,12 @@ namespace ToDoApi.DataAccess;
 
 public class UserRepo : GenericRepo<UserEntity>, IUserRepo
 {
-    public UserRepo(DbContext context) : base(context)
+    public UserRepo(DbContext context)
+        : base(context)
     {
     }
 
-    public async Task<UserEntity> GetLoginAsync(string login, CancellationToken cancellationToken)
+    public async Task<UserEntity> GetNameAsync(string login, CancellationToken cancellationToken)
     {
         var entity = await _dbSet
             .FirstOrDefaultAsync(u => u.UserName == login, cancellationToken);

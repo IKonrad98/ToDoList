@@ -5,9 +5,9 @@ using ToDoApi.DataAccess.RepoInterfaces;
 
 namespace ToDoApi.DataAccess;
 
-public class ToDoItemRepo : GenericRepo<ToDoItemEntity>, IToDoItemRepo
+public class PasswordRepo : GenericRepo<PasswordEntity>, IPasswordRepo
 {
-    public ToDoItemRepo(DbContext context)
+    public PasswordRepo(DbContext context)
         : base(context)
     {
     }

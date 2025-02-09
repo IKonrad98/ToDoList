@@ -5,7 +5,7 @@ namespace ToDoApi.DataAccess.RepoInterfaces;
 
 public interface IUserRepo : IGenericRepo<UserEntity>
 {
-    Task<UserEntity> GetLoginAsync(string login, CancellationToken cancellationToken);
+    Task<UserEntity> GetNameAsync(string login, CancellationToken cancellationToken);
 
     Task<UserEntity> GetByEmailAsync(string email, CancellationToken cancellationToken);
 }
