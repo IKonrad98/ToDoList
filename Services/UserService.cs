@@ -29,27 +29,40 @@ public class UserService : IUserService
 
     public async Task<UserModel> CreateAsync(CreateUserModel user, CancellationToken cancellationToken)
     {
-        var salt = _passwordEncryptionHelper.GenerateSalt(user.Password);
-        var hashedPassword = _passwordEncryptionHelper.HashPassword(user.Password, salt);
-        var passwordEntity = new PasswordEntity
+        try
         {
-            Salt = salt,
-            Hash = hashedPassword
-        };
+            var existingUser = await _repo.GetByEmailAsync(user.Email, cancellationToken);
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("User with this email already exists");
+            }
 
-        await _passwordRepo.CreateAsync(passwordEntity, cancellationToken);
+            var salt = _passwordEncryptionHelper.GenerateSalt(user.Password);
+            var hashedPassword = _passwordEncryptionHelper.HashPassword(user.Password, salt);
+            var passwordEntity = new PasswordEntity
+            {
+                Salt = salt,
+                Hash = hashedPassword
+            };
+            await _passwordRepo.CreateAsync(passwordEntity, cancellationToken);
 
-        var UserEntity = new UserEntity
+            var userEntity = _mapper.Map<UserEntity>(user);
+            userEntity.PasswordId = passwordEntity.Id;
+            userEntity.CreateUser = DateTime.UtcNow;
+
+            var createdUser = await _repo.CreateAsync(userEntity, cancellationToken);
+            await _repo.SaveChangesAsync(cancellationToken);
+
+            return _mapper.Map<UserModel>(createdUser);
+        }
+        catch (AutoMapperMappingException ex)
         {
-            UserName = user.UserName,
-            Email = user.Email,
-            PasswordId = passwordEntity.Id
-        };
-
-        var createdUser = await _repo.CreateAsync(UserEntity, cancellationToken);
-        var result = _mapper.Map<UserEntity, UserModel>(createdUser);
-
-        return result;
+            throw new InvalidOperationException("Error mapping user data", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Error creating user", ex);
+        }
     }
 
     public async Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken)
@@ -94,7 +107,6 @@ public class UserService : IUserService
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var getDeleted = _repo.DeleteAsync(id, cancellationToken);
         await _repo.DeleteAsync(id, cancellationToken);
         await _repo.SaveChangesAsync(cancellationToken);
     }

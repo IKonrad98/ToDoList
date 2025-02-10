@@ -24,6 +24,10 @@ public class UserConfigurations : IEntityTypeConfiguration<UserEntity>
             .IsUnique()
             .HasDatabaseName("IX_Users_Email");
 
+        builder.HasOne(u => u.Password)
+            .WithOne()
+            .HasForeignKey<UserEntity>(u => u.PasswordId);
+
         builder.Property(u => u.CreateUser)
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
 

@@ -1,19 +1,16 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
 using ToDoApi.DataAccess;
 using ToDoApi.DataAccess.RepoInterfaces;
 using ToDoApi.Infrastructure;
-using ToDoApi.Mappings;
 using ToDoApi.Services;
 using ToDoApi.Services.ServicesInterface;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connection = string.Empty;
-connection = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<DbContext, ToDoApiDbContext>(options =>
-    options.UseNpgsql(connection));
+builder.Services.AddDbContext<ToDoApiDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddTransient<IToDoItemRepo, ToDoItemRepo>();
 builder.Services.AddTransient<IToDoItemService, ToDoItemService>();
@@ -23,6 +20,9 @@ builder.Services.AddTransient<IPasswordRepo, PasswordRepo>();
 builder.Services.AddTransient<IPasswordEncryptionHelper, PasswordEncryptionHelper>();
 
 builder.Services.AddAutoMapper(typeof(ToDoApiMappingProfile));
+
+var mapper = builder.Services.BuildServiceProvider().GetService<IMapper>();
+mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
 builder.Services.AddControllers();
 
