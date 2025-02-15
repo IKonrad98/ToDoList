@@ -45,6 +45,10 @@ public class ToDoItemService : IToDoItemService
     public async Task<ToDoItemModel> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await _repo.GetByIdAsync(id, cancellationToken);
+        if (entity is null)
+        {
+            return null;
+        }
 
         var result = new ToDoItemModel
         {
@@ -59,7 +63,7 @@ public class ToDoItemService : IToDoItemService
         return result;
     }
 
-    public async Task<ToDoItemModel> UpdateAsync(ToDoItemModel model, CancellationToken cancellationToken)
+    public async Task<ToDoItemModel> UpdateAsync(UpdateToDoItemModel model, CancellationToken cancellationToken)
     {
         var entity = new ToDoItemEntity
         {

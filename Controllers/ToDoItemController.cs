@@ -32,6 +32,10 @@ public class ToDoItemController : ControllerBase
         CancellationToken cancellationToken)
     {
         var toDoItem = await _service.GetByIdAsync(id, cancellationToken);
+        if (toDoItem is null)
+        {
+            return NotFound();
+        }
         return Ok(toDoItem);
     }
 
@@ -49,6 +53,6 @@ public class ToDoItemController : ControllerBase
     public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         await _service.DeleteAsync(id, cancellationToken);
-        return NoContent();
+        return Ok();
     }
 }

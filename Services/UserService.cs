@@ -117,6 +117,5 @@ public class UserService : IUserService
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         await _repo.DeleteAsync(id, cancellationToken);
-        await _repo.SaveChangesAsync(cancellationToken);
     }
 }
