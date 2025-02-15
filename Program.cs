@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
 using ToDoApi.DataAccess;
@@ -18,10 +17,10 @@ internal class Program
 
         builder.Services.AddTransient<IToDoItemRepo, ToDoItemRepo>();
         builder.Services.AddTransient<IToDoItemService, ToDoItemService>();
-
+        builder.Services.AddTransient<IUserRepo, UserRepo>();
+        builder.Services.AddTransient<IUserService, UserService>();
+        builder.Services.AddTransient<IPasswordRepo, PasswordRepo>();
         builder.Services.AddTransient<IPasswordEncryptionHelper, PasswordEncryptionHelper>();
-
-        builder.Services.AddAutoMapper(typeof(ToDoApiMappingProfile));
 
         builder.Services.AddControllers();
 
@@ -29,18 +28,6 @@ internal class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
-
-        var mapper = app.Services.GetService<IMapper>();
-        try
-        {
-            mapper.ConfigurationProvider.AssertConfigurationIsValid();
-            Console.WriteLine("AutoMapper configuration is valid.");
-        }
-        catch (AutoMapperConfigurationException ex)
-        {
-            Console.WriteLine("AutoMapper configuration is invalid: " + ex.Message);
-            throw;
-        }
 
         if (app.Environment.IsDevelopment())
         {
