@@ -9,7 +9,8 @@ public class ToDoApiDbContext : DbContext
     public DbSet<ToDoItemEntity> ToDoItems { get; set; }
     public DbSet<UserEntity> Users { get; set; }
 
-    public ToDoApiDbContext(DbContextOptions<ToDoApiDbContext> options) : base(options)
+    public ToDoApiDbContext(DbContextOptions<ToDoApiDbContext> options)
+        : base(options)
     {
     }
 

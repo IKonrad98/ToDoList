@@ -1,76 +1,45 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using ToDoApi.Data;
-using ToDoApi.Data.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
+using ToDoApi.Services.ServicesInterface;
 
 namespace ToDoApi.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("users")]
 public class UserController : ControllerBase
 {
-    private readonly ToDoApiDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IUserService _userService;
 
-    public UserController(ToDoApiDbContext context, IMapper mapper)
+    public UserController(IUserService userService)
     {
-        _context = context;
-        _mapper = mapper;
+        _userService = userService;
     }
 
-    [HttpGet]
-    public IActionResult GetUsers()
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateUser(
+        [FromBody] CreateUserModel model,
+        CancellationToken cancellationToken
+        )
     {
-        var users = _context.Users.ToList();
-        return Ok(_mapper.Map<List<UserModel>>(users));
+        var user = await _userService.CreateAsync(model, cancellationToken);
+        return Ok(user);
+    }
+
+    [HttpGet("{email}")]
+    public async Task<IActionResult> GetByEmail(
+        string email,
+        CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetByEmailAsync(email, cancellationToken);
+        return Ok(user);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetUserById(Guid id)
+    public async Task<IActionResult> GetById(
+        Guid id,
+        CancellationToken cancellationToken)
     {
-        var user = _context.Users.Find(id);
-        if (user == null) return NotFound();
-
-        return Ok(_mapper.Map<UserModel>(user));
-    }
-
-    [HttpPost]
-    public IActionResult CreateUser([FromBody] RegisterUserModel model)
-    {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        var user = _mapper.Map<UserEntity>(model);
-        user.Id = Guid.NewGuid();
-        user.CreateUser = DateTime.UtcNow;
-
-        _context.Users.Add(user);
-        _context.SaveChanges();
-
-        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, _mapper.Map<UserModel>(user));
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult UpdateUser(Guid id, [FromBody] UserModel model)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null) return NotFound();
-
-        _mapper.Map(model, user);
-        _context.SaveChanges();
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteUser(Guid id)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null) return NotFound();
-
-        _context.Users.Remove(user);
-        _context.SaveChanges();
-
-        return NoContent();
+        var user = await _userService.GetByIdAsync(id, cancellationToken);
+        return Ok(user);
     }
 }
