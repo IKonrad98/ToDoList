@@ -1,56 +1,54 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using ToDoApi.Data;
-using ToDoApi.Data.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
+using ToDoApi.Services.ServicesInterface;
 
 namespace ToDoApi.Controllers;
 
-[Route("api/todo")]
+[Route("todo")]
 [ApiController]
 public class ToDoItemController : ControllerBase
 {
-    private readonly ToDoApiDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IToDoItemService _service;
 
-    public ToDoItemController(ToDoApiDbContext context, IMapper mapper)
+    public ToDoItemController(IToDoItemService toDoItemService)
     {
-        _context = context;
-        _mapper = mapper;
+        _service = toDoItemService;
+    }
+
+    [HttpPost("create")]
+    public async Task<ActionResult<ToDoItemModel>> CreateAsync(
+        [FromBody] CreateToDoItemModel createToDoItemModel,
+        CancellationToken cancellationToken
+        )
+    {
+        var toDoItem = await _service.CreateAsync(createToDoItemModel, cancellationToken);
+
+        return Ok(toDoItem);
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id)
+    public async Task<ActionResult<ToDoItemModel>> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken)
     {
-        var entity = _context.ToDoItems.Find(id);
-        if (entity == null) return NotFound();
-
-        var model = _mapper.Map<ToDoItemModel>(entity);
-        return Ok(model);
-    }
-
-    [HttpPost]
-    public IActionResult Create(CreateToDoItemModel model)
-    {
-        var entity = _mapper.Map<ToDoItemEntity>(model);
-        entity.Id = Guid.NewGuid();
-
-        _context.ToDoItems.Add(entity);
-        _context.SaveChanges();
-
-        var result = _mapper.Map<ToDoItemModel>(entity);
-        return CreatedAtAction(nameof(Get), new { id = entity.Id }, result);
+        var toDoItem = await _service.GetByIdAsync(id, cancellationToken);
+        return Ok(toDoItem);
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(Guid id, UpdateToDoItemModel model)
+    public async Task<ActionResult<ToDoItemModel>> UpdateAsync(
+        Guid id, [FromBody] ToDoItemModel updateToDoItemModel,
+        CancellationToken cancellationToken)
     {
-        var entity = _context.ToDoItems.Find(id);
-        if (entity == null) return NotFound();
+        updateToDoItemModel.Id = id;
+        var updatedToDoItem = await _service.UpdateAsync(updateToDoItemModel, cancellationToken);
+        return Ok(updatedToDoItem);
+    }
 
-        _mapper.Map(model, entity);
-        _context.SaveChanges();
-
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        await _service.DeleteAsync(id, cancellationToken);
         return NoContent();
     }
 }
