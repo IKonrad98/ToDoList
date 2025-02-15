@@ -27,6 +27,8 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddControllers().AddNewtonsoftJson();
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 using ToDoApi.Services.ServicesInterface;
 
@@ -39,14 +40,15 @@ public class ToDoItemController : ControllerBase
         return Ok(toDoItem);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<ToDoItemModel>> UpdateAsync(
-        Guid id, [FromBody] ToDoItemModel updateToDoItemModel,
-        CancellationToken cancellationToken)
+    [HttpPatch("{id}")]
+    public async Task<ActionResult> UpdateAsync(
+        [FromRoute] Guid id,
+        [FromBody] JsonPatchDocument<UpdateToDoItemModel> model,
+        CancellationToken cancellationToken
+        )
     {
-        updateToDoItemModel.Id = id;
-        var updatedToDoItem = await _service.UpdateAsync(updateToDoItemModel, cancellationToken);
-        return Ok(updatedToDoItem);
+        var toDoItem = await _service.UpdateAsync(model, id, cancellationToken);
+        return Ok(toDoItem);
     }
 
     [HttpDelete("{id}")]
