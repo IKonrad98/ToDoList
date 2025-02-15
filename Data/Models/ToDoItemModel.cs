@@ -11,4 +11,5 @@ public class ToDoItemModel
     public DateTime CreateItem { get; set; }
     public DateTime? Deadline { get; set; }
     public PriorityLevel Priority { get; set; }
+    public Guid? UserId { get; set; }
 }

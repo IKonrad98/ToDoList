@@ -8,4 +8,5 @@ public class CreateToDoItemModel
     public string? Description { get; set; }
     public DateTime? Deadline { get; set; }
     public PriorityLevel Priority { get; set; }
+    public Guid UserId { get; set; }
 }
