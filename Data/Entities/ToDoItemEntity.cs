@@ -6,7 +6,7 @@ public class ToDoItemEntity : BaseEntity
     public string? Description { get; set; }
     public bool? IsCompleted { get; set; }
     public DateTime CreateItem { get; set; }
-    public DateTime Deadline { get; set; }
+    public DateTime? Deadline { get; set; }
 
     public PriorityLevel? Priority { get; set; }
 
@@ -16,7 +16,7 @@ public class ToDoItemEntity : BaseEntity
 
 public enum PriorityLevel
 {
-    Low = 1,
-    Medium = 2,
-    High = 3
+    Low = 0,
+    Medium = 1,
+    High = 2
 }

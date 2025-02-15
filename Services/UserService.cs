@@ -67,6 +67,12 @@ public class UserService : IUserService
     public async Task<UserModel> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
         var entity = await _repo.GetByEmailAsync(email, cancellationToken);
+
+        if (entity is null)
+        {
+            throw new Exception("User not found");
+        }
+
         return new UserModel
         {
             Id = entity.Id,
@@ -78,6 +84,12 @@ public class UserService : IUserService
     public async Task<UserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await _repo.GetByIdAsync(id, cancellationToken);
+
+        if (entity is null)
+        {
+            throw new Exception("User not found");
+        }
+
         return new UserModel
         {
             Id = entity.Id,
@@ -89,6 +101,7 @@ public class UserService : IUserService
     public async Task<UserModel> LoginAsync(LoginUserModel login, CancellationToken cancellationToken)
     {
         var user = await _repo.GetByEmailAsync(login.Email, cancellationToken);
+
         if (user is null)
         {
             throw new Exception("User not found");

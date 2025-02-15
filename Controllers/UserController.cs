@@ -42,4 +42,23 @@ public class UserController : ControllerBase
         var user = await _userService.GetByIdAsync(id, cancellationToken);
         return Ok(user);
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(
+        [FromBody] LoginUserModel model,
+        CancellationToken cancellationToken
+        )
+    {
+        var user = await _userService.LoginAsync(model, cancellationToken);
+        return Ok(user);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        await _userService.DeleteAsync(id, cancellationToken);
+        return Ok();
+    }
 }
