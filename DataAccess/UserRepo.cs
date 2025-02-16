@@ -28,4 +28,13 @@ public class UserRepo : GenericRepo<UserEntity>, IUserRepo
 
         return entity;
     }
+
+    public async Task<UserEntity> GetAllToDo(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await _dbSet
+            .Include(u => u.ToDoItems)
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+        return entity;
+    }
 }

@@ -21,10 +21,11 @@ public class ToDoItemService : IToDoItemService
         {
             Title = model.Title,
             Description = model.Description,
-            CreateItem = DateTime.UtcNow,
             IsCompleted = false,
+            CreateItem = DateTime.UtcNow,
+            Deadline = null,
+            Priority = model.Priority ?? PriorityLevel.Low,
             UserId = model.UserId,
-            Priority = PriorityLevel.Low,
         };
 
         var addedEntity = await _repo.CreateAsync(entity, cancellationToken);
@@ -35,8 +36,10 @@ public class ToDoItemService : IToDoItemService
             Id = addedEntity.Id,
             Title = addedEntity.Title,
             Description = addedEntity.Description,
-            CreateItem = addedEntity.CreateItem,
             IsCompleted = addedEntity.IsCompleted,
+            CreateItem = addedEntity.CreateItem,
+            Deadline = addedEntity.Deadline,
+            Priority = addedEntity.Priority ?? PriorityLevel.Low,
             UserId = addedEntity.UserId
         };
 

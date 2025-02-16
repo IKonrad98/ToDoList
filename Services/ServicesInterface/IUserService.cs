@@ -10,6 +10,8 @@ public interface IUserService
 
     Task<UserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
+    Task<List<ToDoItemModel>> GetAllToDo(Guid id, CancellationToken cancellationToken);
+
     Task<UserModel> LoginAsync(LoginUserModel login, CancellationToken cancellationToken);
 
     Task DeleteAsync(Guid id, CancellationToken cancellationToken);
