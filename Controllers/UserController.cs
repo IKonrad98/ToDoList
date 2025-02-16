@@ -43,6 +43,16 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("{id}/todolist")]
+    public async Task<IActionResult> GetAllToDo(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var user = await _userService.GetAllToDo(id, cancellationToken);
+
+        return Ok(user);
+    }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login(
         [FromBody] LoginUserModel model,

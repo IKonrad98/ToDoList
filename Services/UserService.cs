@@ -98,6 +98,26 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<List<ToDoItemModel>> GetAllToDo(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await _repo.GetAllToDo(id, cancellationToken);
+        if (entity is null)
+        {
+            throw new Exception("Not found");
+        }
+        return entity.ToDoItems.Select(x => new ToDoItemModel
+        {
+            Id = x.Id,
+            Title = x.Title,
+            Description = x.Description,
+            CreateItem = x.CreateItem,
+            IsCompleted = x.IsCompleted,
+            UserId = x.UserId,
+            Deadline = x.Deadline,
+            Priority = x.Priority ?? PriorityLevel.Low
+        }).ToList();
+    }
+
     public async Task<UserModel> LoginAsync(LoginUserModel login, CancellationToken cancellationToken)
     {
         var user = await _repo.GetByEmailAsync(login.Email, cancellationToken);
