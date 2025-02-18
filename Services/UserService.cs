@@ -1,4 +1,5 @@
-﻿using ToDoApi.Data.Entities;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using ToDoApi.Data.Entities;
 using ToDoApi.DataAccess.RepoInterfaces;
 using ToDoApi.Infrastructure;
 using ToDoApi.Models;
@@ -150,6 +151,43 @@ public class UserService : IUserService
             UserName = user.UserName,
             Email = user.Email
         };
+    }
+
+    public async Task<UserModel> UpdateAsync(
+        Guid id,
+        JsonPatchDocument<UpdateUserModel> model,
+        CancellationToken cancellationToken
+        )
+    {
+        var user = await _repo.GetByIdAsync(id, cancellationToken);
+
+        if (user is null)
+        {
+            throw new Exception("User not found");
+        }
+
+        var userToUpdate = new UpdateUserModel
+        {
+            UserName = user.UserName,
+            Email = user.Email
+        };
+
+        model.ApplyTo(userToUpdate);
+
+        user.UserName = userToUpdate.UserName ?? user.UserName;
+        user.Email = userToUpdate.Email ?? user.Email;
+
+        await _repo.UpdateAsync(user, cancellationToken);
+        await _repo.SaveChangesAsync(cancellationToken);
+
+        var result = new UserModel
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email
+        };
+
+        return result;
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)

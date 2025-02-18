@@ -77,7 +77,7 @@ public class ToDoItemService : IToDoItemService
 
         if (entity is null)
         {
-            return null;
+            throw new Exception("Not found");
         }
 
         var updateModel = new UpdateToDoItemModel
