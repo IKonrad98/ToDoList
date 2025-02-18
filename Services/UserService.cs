@@ -23,6 +23,10 @@ public class UserService : IUserService
 
     public async Task<UserModel> CreateAsync(CreateUserModel user, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password) || string.IsNullOrWhiteSpace(user.UserName))
+        {
+            throw new ArgumentException("Invalid user data");
+        }
         try
         {
             var existingUser = await _repo.GetByEmailAsync(user.Email, cancellationToken);
@@ -55,7 +59,8 @@ public class UserService : IUserService
             {
                 Id = createdUser.Id,
                 UserName = createdUser.UserName,
-                Email = createdUser.Email
+                Email = createdUser.Email,
+                CreateUser = (DateTime)createdUser.CreateUser
             };
         }
         catch (Exception ex)
