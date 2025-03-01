@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.DataAccess;
-using ToDoApi.DataAccess.RepoInterfaces;
+using ToDoApi.DataAccess.Repos;
+using ToDoApi.DataAccess.Repos.RepoInterfaces;
 using ToDoApi.Infrastructure;
 using ToDoApi.Services;
 using ToDoApi.Services.ServicesInterface;

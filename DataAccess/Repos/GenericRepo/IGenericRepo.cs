@@ -1,4 +1,4 @@
-﻿namespace ToDoApi.DataAccess.GenericRepo;
+﻿namespace ToDoApi.DataAccess.Repos.GenericRepo;
 
 public interface IGenericRepo<T> where T : class
 {
