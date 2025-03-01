@@ -2,7 +2,7 @@
 using System.Reflection;
 using ToDoApi.Data.Entities;
 
-namespace ToDoApi.Data;
+namespace ToDoApi.DataAccess;
 
 public class ToDoApiDbContext : DbContext
 {

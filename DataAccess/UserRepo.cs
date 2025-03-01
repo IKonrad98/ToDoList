@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ToDoApi.Data;
 using ToDoApi.Data.Entities;
 using ToDoApi.DataAccess.GenericRepo;
 using ToDoApi.DataAccess.RepoInterfaces;
