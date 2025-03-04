@@ -1,4 +1,4 @@
-﻿namespace ToDoApi.Infrastructure;
+﻿namespace ToDoApi.Infrastructure.InfrastructureInterfaces;
 
 public interface IPasswordEncryptionHelper
 {

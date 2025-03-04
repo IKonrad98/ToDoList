@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using ToDoApi.Data.Entities;
 using ToDoApi.DataAccess.Repos.RepoInterfaces;
-using ToDoApi.Infrastructure;
+using ToDoApi.Infrastructure.InfrastructureInterfaces;
 using ToDoApi.Models;
 using ToDoApi.Services.ServicesInterface;
 
