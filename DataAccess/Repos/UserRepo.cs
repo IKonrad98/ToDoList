@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ToDoApi.Data;
 using ToDoApi.Data.Entities;
-using ToDoApi.DataAccess.GenericRepo;
-using ToDoApi.DataAccess.RepoInterfaces;
+using ToDoApi.DataAccess.Repos.GenericRepo;
+using ToDoApi.DataAccess.Repos.RepoInterfaces;
 
-namespace ToDoApi.DataAccess;
+namespace ToDoApi.DataAccess.Repos;
 
 public class UserRepo : GenericRepo<UserEntity>, IUserRepo
 {

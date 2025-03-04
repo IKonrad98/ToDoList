@@ -1,7 +1,7 @@
 ﻿using ToDoApi.Data.Entities;
-using ToDoApi.DataAccess.GenericRepo;
+using ToDoApi.DataAccess.Repos.GenericRepo;
 
-namespace ToDoApi.DataAccess.RepoInterfaces;
+namespace ToDoApi.DataAccess.Repos.RepoInterfaces;
 
 public interface IUserRepo : IGenericRepo<UserEntity>
 {

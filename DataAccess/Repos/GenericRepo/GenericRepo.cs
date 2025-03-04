@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data.Entities;
 
-namespace ToDoApi.DataAccess.GenericRepo;
+namespace ToDoApi.DataAccess.Repos.GenericRepo;
 
 public class GenericRepo<T> where T : BaseEntity
 {

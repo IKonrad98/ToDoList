@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using ToDoApi.Data.Entities;
-using ToDoApi.DataAccess.RepoInterfaces;
+using ToDoApi.DataAccess.Repos.RepoInterfaces;
 using ToDoApi.Models;
 using ToDoApi.Services.ServicesInterface;
 
@@ -77,7 +77,7 @@ public class ToDoItemService : IToDoItemService
 
         if (entity is null)
         {
-            return null;
+            throw new Exception("Not found");
         }
 
         var updateModel = new UpdateToDoItemModel

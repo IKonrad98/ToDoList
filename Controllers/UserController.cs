@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 using ToDoApi.Services.ServicesInterface;
 
@@ -63,10 +64,22 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Update(
+        Guid id,
+        [FromBody] JsonPatchDocument<UpdateUserModel> model,
+        CancellationToken cancellationToken
+        )
+    {
+        var user = await _userService.UpdateAsync(id, model, cancellationToken);
+        return Ok(user);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(
         Guid id,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+        )
     {
         await _userService.DeleteAsync(id, cancellationToken);
         return Ok();
