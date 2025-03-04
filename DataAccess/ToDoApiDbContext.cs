@@ -7,6 +7,7 @@ namespace ToDoApi.DataAccess;
 public class ToDoApiDbContext : DbContext
 {
     public DbSet<ToDoItemEntity> ToDoItems { get; set; }
+    public DbSet<TokenEntity> Tokens { get; set; }
     public DbSet<UserEntity> Users { get; set; }
 
     public ToDoApiDbContext(DbContextOptions<ToDoApiDbContext> options)
